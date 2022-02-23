@@ -44,5 +44,30 @@ For this problem set, you will not solve the Monty Hall Problem, but you will ha
 \end{enumerate}
 
 ```{r tidy=TRUE}
-# Code
+#Start by creating a constructor function for our doors.
+newdoor <- function(door.number){
+  door <- list(number = door.number)
+  class(door) <- "door"
+  return(door)
+}
+
+#Construct each of the doors
+door1 <- newdoor(1)
+door2 <- newdoor(2)
+door3 <- newdoor(3)
+
+#Make a method for playgame
+playgame <- function(door) {
+  UseMethod("playgame")
+}
+
+#Specify the method for a door
+playgame.door <- function(door){
+  x = sample(1:3,1)
+  if(x==door$number){"Congratulations! You have won a brand new car!"}
+  else{"Awww too bad! You chose the wrong door. Better luck next time!"}
+}
+
+#Test playgame
+playgame.door(door1)
 ```
