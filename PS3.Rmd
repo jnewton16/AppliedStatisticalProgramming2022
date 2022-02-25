@@ -46,9 +46,14 @@ For this problem set, you will not solve the Monty Hall Problem, but you will ha
 ```{r tidy=TRUE}
 #Start by creating a constructor function for our doors.
 newdoor <- function(door.number){
-  door <- list(number = door.number)
-  class(door) <- "door"
-  return(door)
+  stopifnot(is.numeric(door.number))#Forces them to construct with a number
+  door <- list(number = door.number, #gives the class door the number attribute
+               has.handle = TRUE, #doors have handles
+               has.hinge = TRUE,#and hinges
+               is.rectangular = TRUE, #Any door on this show is a rectangle
+               blocks.dogs = TRUE) #and my dog Mio can't open them
+  class(door) <- "door" #assigns the class
+  return(door) #returns the door
 }
 
 #Construct each of the doors
@@ -63,11 +68,50 @@ playgame <- function(door) {
 
 #Specify the method for a door
 playgame.door <- function(door){
-  x = sample(1:3,1)
-  if(x==door$number){"Congratulations! You have won a brand new car!"}
-  else{"Awww too bad! You chose the wrong door. Better luck next time!"}
+  x = sample(1:3,1) #sample to decide the winning door
+  if(x==door$number){"Congratulations! You have won a brand new car!"} #Winner message
+  else{"Awww too bad! You chose the wrong door. Better luck next time!"} #Loser message
 }
 
 #Test playgame
 playgame.door(door1)
+playgame.door(door2)
+playgame.door(door3)
+
+#Build a function to validate doors
+validate_door <- function(door){
+  #Check if it is a door
+  if(door$has.handle==FALSE){
+    stop("This isn't a door, where is the handle?")
+  }
+  #Are we sure it is a door?
+  if(door$is.rectangular==FALSE){
+    stop("It isn't even the right shape for a door!")
+  }
+  #Make absolutely sure it is a door
+  if(class(door)!="door"){
+    stop("It looks like a door and quacks like a door, but I'm pretty sure it isn't a door...")
+  }
+  #Make sure it has a number
+  if(is.numeric(door$number)==FALSE){
+    stop("That's the door to leave the studio...you're welcome to choose it, but I'd recommend something different")
+  }
+  #Validate if it has an integer
+  if(door$number != as.integer(door$number)){
+    stop("That's not a door! Doors have integers on them!")
+    }
+  #Validate if it is a door that can win
+  if(door$number>3 | door$number<1){
+    stop("Hey, you weren't supposed to find that door hidden backstage!")
+  }
+  return(door)
+}
+
+validate_door(door1)
+#While I had a group of other tests, they fail so I had to comment them out
+#doorpi <- newdoor(pi) 
+#validate_door(doorpi)
+#door.exit <- newdoor("exit")
+#validate_door(door.exit)
+#validate_door(pi)
 ```
