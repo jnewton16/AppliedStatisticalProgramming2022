@@ -25,9 +25,9 @@ Due Wednesday, March 16, 10:00 AM (Before Class) \\
 
 Your task in this problem set is to combine two datasets in order to observe how many endorsements each candidate received using only \texttt{dplyr} functions. Use the same Presidential primary polls that were used for the in class worksheets on February 28 and March 2.
 
-```{r eval=FALSE}
+```{r}
 # Change eval=FALSE in the code block. Install packages as appropriate.
-#install.packages("fivethirtyeight")
+install.packages("fivethirtyeight")
 library(fivethirtyeight)
 library(tidyverse)
 # URL to the data that you've used.
@@ -48,6 +48,31 @@ First, create two new objects \texttt{polls} and \texttt{Endorsements}. Then com
   \item Rerun the previous line as follows: \texttt{p + theme\_dark()}. Notice how you can still customize your plot without rerunning the plot with new options.
   \item Now, using the knowledge from the last step change the label of the X and Y axes to be more informative, add a title. Save the plot in your forked repository.
 \end{itemize}
+
+```{r}
+#Change variable name, using rename function and store it in our original df
+Endorsements <- Endorsements %>% rename(candidate_name = endorsee)
+
+#Change to a tibble and check the class
+Endorsements <- Endorsements %>% as_tibble()
+class(Endorsements)
+
+#Filter to the candidates with an in command of a vector of the candidates of interest
+polls <- polls %>% 
+  filter(polls$candidate_name %in% c("Amy Klobuchar","Bernard Sanders", "Elizabeth Warren", "Joseph R. Biden Jr.", "Michael Bloomberg", "Pete Buttigieg")) %>% 
+  select(candidate_name, sample_size, start_date, party, pct)
+#build a table based on the candidate name to confirm only those 6 remain in our new object
+table(polls$candidate_name)
+#use summary to see that there are only 5 remaining variables as told to do
+summary(polls)
+
+#Check spelling of names in our Endorsements dataset
+table(Endorsements$candidate_name)
+#Here we can tell Amy Klobuchar, Elizabeth Warren, and Pete Buttigieg are spelled the same. Biden is "Joe Biden" here, while "Joseph R. Biden Jr." in our polls set, Sanders is "Bernie Sanders" here instead of "Bernard Sanders", and Bloomberg does not seem to exist in the endorsements set at all. 
+
+#Now we need to change these using recode
+
+```
 
 
 \section*{Text-as-Data with \texttt{tidyverse}}
