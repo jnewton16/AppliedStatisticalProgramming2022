@@ -71,6 +71,26 @@ table(Endorsements$candidate_name)
 #Here we can tell Amy Klobuchar, Elizabeth Warren, and Pete Buttigieg are spelled the same. Biden is "Joe Biden" here, while "Joseph R. Biden Jr." in our polls set, Sanders is "Bernie Sanders" here instead of "Bernard Sanders", and Bloomberg does not seem to exist in the endorsements set at all. 
 
 #Now we need to change these using recode
+Endorsements <- Endorsements %>% 
+  mutate(candidate_name=recode(candidate_name, "Bernie Sanders" = "Bernard Sanders", "Joe Biden" = "Joseph R. Biden Jr."))
+
+#Combine them into a dataset using an inner join by candidate name, then verify only the 5 expected remain
+pe_combined <- polls_t6 %>% 
+  inner_join(Endorsements, by="candidate_name")
+table(pe_combined$candidate_name)
+
+#Count the number of endorsements for each of the five
+wide_pe_combined <- pe_combined %>% 
+  group_by(candidate_name) %>% 
+  summarize(length(points))
+
+p <- ggplot(data = wide_pe_combined) + geom_col(aes(candidate_name,`length(points)`))
+
+p + theme_dark()
+
+p + labs(y = "Number of Endorsements", x = "Candidate", title = "2020 Democratic Presidential Candidate Endorsements")
+ggsave("candidate_endorsements_2020.pdf",
+       plot = last_plot())
 
 ```
 
