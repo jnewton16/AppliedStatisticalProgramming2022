@@ -3,7 +3,7 @@ title: "Applied Statistical Programming - Spring 2022"
 output: pdf_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -27,7 +27,7 @@ Your task in this problem set is to combine two datasets in order to observe how
 
 ```{r}
 # Change eval=FALSE in the code block. Install packages as appropriate.
-install.packages("fivethirtyeight")
+#install.packages("fivethirtyeight")
 library(fivethirtyeight)
 library(tidyverse)
 # URL to the data that you've used.
@@ -75,7 +75,7 @@ Endorsements <- Endorsements %>%
   mutate(candidate_name=recode(candidate_name, "Bernie Sanders" = "Bernard Sanders", "Joe Biden" = "Joseph R. Biden Jr."))
 
 #Combine them into a dataset using an inner join by candidate name, then verify only the 5 expected remain
-pe_combined <- polls_t6 %>% 
+pe_combined <- polls %>% 
   inner_join(Endorsements, by="candidate_name")
 table(pe_combined$candidate_name)
 
@@ -99,7 +99,7 @@ ggsave("candidate_endorsements_2020.pdf",
 
 For this question you will be analyzing Tweets from President Trump for various characteristics. Load in the following packages and data:
 
-```{r eval=FALSE}
+```{r}
 # Change eval=FALSE in the code block. Install packages as appropriate.
 library(tidyverse)
 #install.packages('tm')
@@ -108,15 +108,103 @@ library(tm)
 library(lubridate)
 #install.packages('wordcloud')
 library(wordcloud)
+library(knitr)
+library(broom)
+library(tidytext)
 trump_tweets_url <- 'https://politicaldatascience.com/PDS/Datasets/trump_tweets.csv'
 tweets <- read_csv(trump_tweets_url)
 ```
 
 \begin{itemize}
   \item First separate the \texttt{created\_at} variable into two new variables where the date and the time are in separate columns. After you do that, then report the range of dates that is in this dataset.
-  \item Using \texttt{dplyr} subset the data to only include original tweets (remove retweents) and show the text of the President's \textbf{top 5} most popular and most retweeted tweets. (Hint: The \texttt{match} function can help you find the index once you identify the largest values.) 
+  \item Using \texttt{dplyr} subset the data to only include original tweets (remove retweets) and show the text of the President's \textbf{top 5} most popular and most retweeted tweets. (Hint: The \texttt{match} function can help you find the index once you identify the largest values.) 
   \item Create a \textit{corpus} of the tweet content and put this into the object \texttt{Corpus} using the \texttt{tm} (text mining) package. (Hint: Do the assigned readings.)
   \item Remove extraneous whitespace, remove numbers and punctuation, convert everything to lower case and remove 'stop words' that have little substantive meaning (the, a, it).
   \item Now create a \texttt{wordcloud} to visualize the top 50 words the President uses in his tweets. Use only words that occur at least three times. Display the plot with words in random order and use 50 random colors. Save the plot into your forked repository.\item Create a \textit{document term matrix} called \texttt{DTM} that includes the argument \texttt{ control = list(weighting = weightTfIdf)}
   \item Finally, report the 50 words with the the highest tf.idf scores using a lower frequency bound of .8.
 \end{itemize}
+
+```{r}
+#library a package necessary for date conversion
+library(anytime)
+#split the data using mutate and str_split
+created_split <- tweets %>% mutate(date_created = str_split(created_at, pattern = " "))
+#convert it to the correct col/row orientation
+time <- t(as.data.frame(created_split$date_created))
+#name columns
+colnames(time) <- c("date","time")
+#combine into our original dataset
+tweets <- cbind(tweets,time)
+#convert to date format for finding the oldest and newest
+tweets$date <- anydate(tweets$date)
+#oldest tweet day
+min(tweets$date)
+#newest tweet day
+max(tweets$date)
+#So the range of dates is 1/1/2014 to 2/14/2020
+
+#Now to subset only to tweets
+tweets_only <- tweets %>% filter(is_retweet == FALSE)
+#verify our result
+table(tweets_only$is_retweet)
+#get the most popular
+most_liked <- tweets_only %>% 
+  slice_max(favorite_count, n=5)
+most_liked$text
+#Get the most retweeted
+most_retweeted <- tweets_only %>% 
+  slice_max(retweet_count, n=5)
+most_retweeted$text
+
+#Now for the corpus
+#Create the corpus
+Corpus <- VCorpus(VectorSource(tweets_only$text))
+#check that it is working
+writeLines(head(strwrap(Corpus[[420]]),10))
+
+#Now to clean the tweets; I'm splitting it for processing power, but keeping some together for efficiency
+#first I'll remove all URLs
+removepattern <- content_transformer(function(x,pattern){
+  return(gsub(pattern,"",x))
+})
+
+Corpus <- tm_map(Corpus, removepattern, "?(f|ht)(tp)(s?)(://)(.*)(.|/])(.*)")
+
+#Next, I will make transform everything to lower case, remove whitespace, and stopwords
+Corpus <- Corpus %>% 
+  tm_map(content_transformer(tolower)) %>% 
+  tm_map(stripWhitespace) %>% 
+  tm_map(removeWords, stopwords("english")) 
+
+#next I'll remove punctuation and numbers
+Corpus <- Corpus %>% 
+  tm_map(removePunctuation) %>% 
+  tm_map(removeNumbers)
+
+#Test 
+writeLines(head(strwrap(Corpus[[420]]),10))
+#Make the word cloud with random color and order
+set.seed(125)
+wc <- wordcloud(Corpus, min.freq = 3, 
+                random.order = T,
+                random.color = T,
+                max.words = 50,
+                colors = sample(colors()))
+
+#Document Term matrix
+dtm <- DocumentTermMatrix(Corpus, control = list(weighting = weightTfIdf, global=c(0.8,Inf)))
+
+#Get the top 50:
+#Start by turning it into a data frame
+dtm <- tidy(dtm)
+#calculate the scores
+dtm_tfidf <- bind_tf_idf(dtm, term = term, document = document, n = count)
+top50_terms <- dtm_tfidf %>% 
+  group_by(term) %>% 
+  filter(tf_idf == max(tf_idf)) %>% 
+  ungroup() %>% 
+  slice_max(tf_idf, n=50)
+
+head(top50_terms)
+```
+
