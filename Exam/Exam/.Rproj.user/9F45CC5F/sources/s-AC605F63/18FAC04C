@@ -1,0 +1,27 @@
+{
+    "id": "18FAC04C",
+    "path": "~/GitHub/AppliedStatisticalProgramming2022/Exam/Exam/R/PoisMLE_class.R",
+    "project_path": "R/PoisMLE_class.R",
+    "type": "r_source",
+    "hash": "3664693749",
+    "contents": "",
+    "dirty": false,
+    "created": 1649359031180.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "tempName": "Untitled1",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "22,25",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1649359462,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1649359462557,
+    "read_only": false,
+    "read_only_alternatives": []
+}

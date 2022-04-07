@@ -2,8 +2,9 @@
 library(devtools)
 library(roxygen2)
 
+
 #set wd
-setwd("C:/Users/jordo/Documents/GitHub/AppliedStatisticalProgramming2022/")
+setwd("C:/Users/jordo/Documents/GitHub/AppliedStatisticalProgramming2022/PS5/")
 
 
 ## Verify the package and update documentation
@@ -11,10 +12,6 @@ current.code <- as.package("integrateIt")
 check(current.code)
 load_all(current.code)
 document(current.code)
-
-## Check to see if help files are working
-?integrateIt
-
 
 ## Test the function
 #Set up what we're passing to the function
