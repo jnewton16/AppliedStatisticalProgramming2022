@@ -2,20 +2,21 @@
 % Please edit documentation in R/estimatePois.R
 \name{estimatePois}
 \alias{estimatePois}
+\alias{estimatePoisson}
 \title{Estimate Poisson}
 \usage{
 estimatePois(y, SEtype, B)
 }
 \arguments{
-\item{y}{The vector of observed data}
+\item{y}{The vector of observed data, either known or assumed to be from a poisson distribution}
 
 \item{SEtype}{The type of SEs desired, either "basic" or "bootstrapped"}
 
-\item{B}{The number of bootstraps to estimate the SE if SEtype=="bootstrapped". If basic, this is unnecessary.}
+\item{B}{The number of bootstraps to estimate the SE if SEtype=="bootstrapped". If basic, inclusion of this paramater is unnecessary.}
 }
 \value{
-A single numeric output:
- \item{PoisMLE}{An object of type PoisMLE, which contains the MLE, log likelihood, SE, and the type of SE used}
+A single object output:
+ \item{PoisMLE}{An object of type PoisMLE, which contains the MLE, log likelihood, SE, and the type of SE used.}
 }
 \description{
 Estimates a poisson distribution given a vector of data, and returns an object of the class "PoisMLE".
@@ -25,8 +26,18 @@ Returns an object of S4 classes; utilizes the other functions within this packag
 }
 \examples{
 
+set.seed(1625)
+y <- rpois(1000,80)
+estimatePois(y,"basic")
+estimatePois(y,"bootstrapped",1000)
 
+}
+\seealso{
+\code{\link{logLik}}
 
+\code{\link{mle}}
+
+\code{\link{standardError}}
 }
 \author{
 Jordon Newton

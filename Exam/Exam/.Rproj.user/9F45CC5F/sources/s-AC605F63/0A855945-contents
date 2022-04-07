@@ -21,8 +21,6 @@
 #' @seealso \code{\link{standardError}}
 #' @aliases logLikelihood
 #' @rdname logLik
-#' @import methods
-#' @import stats
 #' @export
 
 #set the generic for the loglikelihood

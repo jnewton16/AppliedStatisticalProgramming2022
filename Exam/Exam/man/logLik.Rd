@@ -2,6 +2,7 @@
 % Please edit documentation in R/logLik.R
 \name{logLik}
 \alias{logLik}
+\alias{logLikelihood}
 \title{Log likelihood}
 \usage{
 logLik(y, lambda)
@@ -19,12 +20,22 @@ A single numeric output:
 Calculates the log likelihood of observed data
 }
 \note{
-This log likelihood is conditional on the value of lambda. If lambda is incorrect, then it will provide an erroneus estimate.
+This log likelihood is conditional on the value of lambda. If lambda is incorrect, then it will provide an erroneous estimate. If used in conjuction with the mle function, you will have an estimate for the actual lambda.
 }
 \examples{
 
+set.seed(1625)
+y <- rpois(1000,80)
+lambda <- mle(y)
+logLik(y,lambda)
 
+}
+\seealso{
+\code{\link{estimatePois}}
 
+\code{\link{mle}}
+
+\code{\link{standardError}}
 }
 \author{
 Jordon Newton

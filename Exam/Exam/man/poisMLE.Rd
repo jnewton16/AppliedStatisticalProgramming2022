@@ -11,12 +11,21 @@ The class represents a poisson fitted model
 \details{
 Fitted model objects have the following slots:
 \itemize{
-\item \code{y} The original data
+\item \code{y} The original data. Given it is a poisson model, all data must be positive integers or 0.
 \item \code{MLE} The maximum likelihood estimator for the dataset
 \item \code{LL} The log likelihood calculated from the observed data assuming the MLE is correct
 \item \code{SE} The standard error for the MLE
 \item \code{SEtype} The method used to calculate the standard error
 }
+}
+\seealso{
+\code{\link{estimatePois}}
+
+\code{\link{logLik}}
+
+\code{\link{mle}}
+
+\code{\link{standardError}}
 }
 \author{
 Jordon Newton

@@ -2,6 +2,7 @@
 % Please edit documentation in R/standardError.R
 \name{standardError}
 \alias{standardError}
+\alias{SE}
 \title{Standard Error}
 \usage{
 standardError(y, SEtype, B)
@@ -21,12 +22,22 @@ A single numeric output:
 Calculates the standard error for the data, using one or two methods; standard, or bootstrap
 }
 \note{
-The basic SE is the square root of MLE/n. The bootstrapped version samples n observations from the dataset with replacement B times. The resulting SE is the SD of the MLEs from this matrix.
+The MLE used is calculated using the mle() function from this package. The basic SE is the square root of MLE/n. The bootstrapped version samples n observations from the dataset with replacement B times. The resulting SE is the SD of the MLEs from this matrix.
 }
 \examples{
 
+set.seed(1625)
+y <- rpois(1000,80)
+standardError(y,"basic")
+standardError(y,"bootstrapped",1000)
 
+}
+\seealso{
+\code{\link{estimatePois}}
 
+\code{\link{logLik}}
+
+\code{\link{mle}}
 }
 \author{
 Jordon Newton

@@ -9,13 +9,14 @@ setwd("C:/Users/jordo/Documents/GitHub/AppliedStatisticalProgramming2022/exam/")
 current.code <- as.package("exam")
 load_all(current.code)
 document(current.code)
-test(current.code)
-
+check(current.code)
 
 #Test some data to run through things
-y <- c(8,5,100,6,9,75,15,26,34,33,29,46,80)
+set.seed(1625)
+y <- rpois(1000,80)
 mle(y)
 logLik(y,mle(y))
+#The mle estimate and logLik functions are working properly.
 
 #test the standardError and confirm it gives correct results
 standardError(y,"basic")
@@ -36,3 +37,4 @@ estimatePois(y,"bootstrapped",1000)
 ?standardError()
 ?estimatePois()
 ?PoisMLE
+

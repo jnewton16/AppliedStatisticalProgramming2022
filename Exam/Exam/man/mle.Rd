@@ -2,6 +2,8 @@
 % Please edit documentation in R/mle.R
 \name{mle}
 \alias{mle}
+\alias{MLE}
+\alias{maximumlikelihoodestimator}
 \title{maximum likelihood estimator}
 \usage{
 mle(y)
@@ -11,18 +13,27 @@ mle(y)
 }
 \value{
 A single numeric output:
- \item{MLE}{The log maximum likelihood estimate of lamda}
+ \item{MLE}{The maximum likelihood estimate of lamda}
 }
 \description{
 Calculates the maximum likelihood estimator for lambda in a poisson distribution
 }
 \note{
-This uses the basic formula to estimate the MLE
+This uses the function for a poisson distribution. Do not use with data from another distribution.
 }
 \examples{
 
+set.seed(1625)
+y <- rpois(1000,80)
+mle(y)
 
+}
+\seealso{
+\code{\link{estimatePois}}
 
+\code{\link{logLik}}
+
+\code{\link{standardError}}
 }
 \author{
 Jordon Newton
