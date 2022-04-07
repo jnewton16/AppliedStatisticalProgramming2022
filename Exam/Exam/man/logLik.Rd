@@ -5,12 +5,12 @@
 \alias{logLikelihood}
 \title{Log likelihood}
 \usage{
-logLik(y, lambda)
+logLik(y, lambda = mle(y))
 }
 \arguments{
 \item{y}{The vector of observed data to calculate the log likelihood from}
 
-\item{lambda}{the assumed value of lambda}
+\item{lambda}{the assumed value of lambda. The default value is set at the MLE of y.}
 }
 \value{
 A single numeric output:

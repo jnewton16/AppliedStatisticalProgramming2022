@@ -4,7 +4,7 @@
 #'
 #' @param y The vector of observed data
 #' @param SEtype The type of SE to be calculated; basic, or bootstrapped.
-#' @param B The number of bootstraps to run, default set to 1000 (not required for basic SEs).
+#' @param B The number of bootstraps to run, default set to 1000. Not used for basic SE estimation.
 #'
 #' @return A single numeric output:
 #'  \item{SE}{Standard error from the type that was chosen, "basic", or "bootstrapped".}
@@ -27,7 +27,7 @@
 
 #Set up the generic
 setGeneric(name = "standardError",
-           def=function(y,SEtype,B)
+           def=function(y,SEtype,B=1000)
            {standardGeneric("standardError")}
 )
 
@@ -37,7 +37,7 @@ setMethod(f = "standardError",
             if(SEtype=="basic"){
               StdE <- sqrt(mle(y)/length(y))
             }
-            if(SEtype == "bootstrapped"){
+            else if(SEtype == "bootstrapped"){
               #Put a few integer checks on B
               if(B%%1!=0){stop("B must be an integer")}
               if(B<1){stop("B must be a positive number greater than 0")}
@@ -55,6 +55,7 @@ setMethod(f = "standardError",
               #calculate the Standard error
               StdE <- sd(mlevec)
             }
+            else{stop("Please input an accurate value for SEtype: basic, bootstrapped")}
             #Return our final value
             return(StdE)
           }

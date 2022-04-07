@@ -5,14 +5,14 @@
 \alias{SE}
 \title{Standard Error}
 \usage{
-standardError(y, SEtype, B)
+standardError(y, SEtype, B = 1000)
 }
 \arguments{
 \item{y}{The vector of observed data}
 
 \item{SEtype}{The type of SE to be calculated; basic, or bootstrapped.}
 
-\item{B}{The number of bootstraps to run, default set to 1000 (not required for basic SEs).}
+\item{B}{The number of bootstraps to run, default set to 1000. Not used for basic SE estimation.}
 }
 \value{
 A single numeric output:

@@ -1,7 +1,7 @@
 Package: Exam
 Type: Package
 Title: Poisson Distribution Estimation
-Version: 0.1.0
+Version: 1.0.0
 Author: Jordon Newton
 Maintainer: The package maintainer <j.newton@wustl.edu>
 Description: The package takes data and tries to estimate a poisson distribution, as required for the ASP2022 exam. There are 4 functions of interest: 
@@ -14,7 +14,8 @@ Encoding: UTF-8
 LazyData: true
 Depends: 
   methods,
-  stats
+  stats,
+  ggplot2
 RoxygenNote: 7.1.2
 Suggests: 
     testthat (>= 3.0.0)

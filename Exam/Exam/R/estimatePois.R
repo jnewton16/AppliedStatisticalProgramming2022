@@ -4,7 +4,7 @@
 #'
 #' @param y The vector of observed data, either known or assumed to be from a poisson distribution
 #' @param SEtype The type of SEs desired, either "basic" or "bootstrapped"
-#' @param B The number of bootstraps to estimate the SE if SEtype=="bootstrapped". If basic, inclusion of this paramater is unnecessary.
+#' @param B The number of bootstraps to estimate the SE if SEtype=="bootstrapped". If basic, inclusion of this parameter is unnecessary. Default is 1000.
 #'
 #' @return A single object output:
 #'  \item{PoisMLE}{An object of type PoisMLE, which contains the MLE, log likelihood, SE, and the type of SE used.}
@@ -26,7 +26,7 @@
 
 #Set up the generic
 setGeneric(name = "estimatePois",
-           def=function(y,SEtype,B)
+           def=function(y,SEtype,B=1000)
            {standardGeneric("estimatePois")}
 )
 
@@ -35,7 +35,7 @@ setMethod(f = "estimatePois",
           definition = function(y,SEtype=c("basic","bootstrapped"),B){
             #Use the other functions to set definitions
             .mle <- mle(y)
-            .ll <- logLik(y,.mle)
+            .ll <- logLik(y)
             .se <- standardError(y,SEtype,B)
             #Return our PoisMLE object using the above
             return(new("PoisMLE",

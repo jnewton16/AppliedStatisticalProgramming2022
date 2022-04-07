@@ -3,7 +3,7 @@
 #' Calculates the log likelihood of observed data
 #'
 #' @param y The vector of observed data to calculate the log likelihood from
-#' @param lambda the assumed value of lambda
+#' @param lambda the assumed value of lambda. The default value is set at the MLE of y.
 #'
 #' @return A single numeric output:
 #'  \item{loglikelihood}{The log likelihood for the observed data, conditioned on the given value of lamda}
@@ -27,7 +27,7 @@
 
 #set the generic for the loglikelihood
 setGeneric(name = "logLik",
-            def=function(y,lambda)
+            def=function(y,lambda=mle(y))
             {standardGeneric("logLik")}
 )
 

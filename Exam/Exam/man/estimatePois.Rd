@@ -5,14 +5,14 @@
 \alias{estimatePoisson}
 \title{Estimate Poisson}
 \usage{
-estimatePois(y, SEtype, B)
+estimatePois(y, SEtype, B = 1000)
 }
 \arguments{
 \item{y}{The vector of observed data, either known or assumed to be from a poisson distribution}
 
 \item{SEtype}{The type of SEs desired, either "basic" or "bootstrapped"}
 
-\item{B}{The number of bootstraps to estimate the SE if SEtype=="bootstrapped". If basic, inclusion of this paramater is unnecessary.}
+\item{B}{The number of bootstraps to estimate the SE if SEtype=="bootstrapped". If basic, inclusion of this parameter is unnecessary. Default is 1000.}
 }
 \value{
 A single object output:
