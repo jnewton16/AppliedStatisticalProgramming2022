@@ -34,3 +34,13 @@ setClass(Class="PoisMLE",
            SEtype = character()
          )
         )
+
+#Set up validity checks
+setValidity("PoisMLE",function(object){
+  #Test the data y to see if any of y is not a positive integer or 0
+  positive <- all(sapply(y, function(x){ifelse(x>0,T,F)}))
+  if(!positive){stop("The observations must all be positive")}
+
+  integer <- all(sapply(y, function(x){ifelse(x%%1==0,T,F)}))
+  if(!integer){stop("The observations must all be integers")}
+})
