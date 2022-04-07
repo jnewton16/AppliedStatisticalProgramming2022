@@ -21,20 +21,21 @@
 setClass(Class="PoisMLE",
          representation = representation(
            y = "numeric",
-           MLE = "function",
+           MLE = "numeric",
            LL = "numeric",
            SE = "numeric",
            SEtype = "character"
          ),
          prototype = prototype(
            y = numeric(),
-           MLE = function(x) {return(x)},
+           MLE = numeric(),
            LL = numeric(),
            SE = numeric(),
            SEtype = character()
          )
         )
 
+#' @export
 #Set up validity checks
 setValidity("PoisMLE",function(object){
   #Test the data y to see if any of y is not a positive integer or 0
@@ -44,3 +45,12 @@ setValidity("PoisMLE",function(object){
   integer <- all(sapply(y, function(x){ifelse(x%%1==0,T,F)}))
   if(!integer){stop("The observations must all be integers")}
 })
+
+#' @export
+#initializer
+setMethod("initialize","PoisMLE",
+          function(.Object,...){
+            value=callNextMethod()
+            return(value)
+          }
+)
